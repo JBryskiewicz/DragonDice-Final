@@ -17,7 +17,6 @@ import pl.dragondice.dragondicefinal.service.feats.FeatService;
 import pl.dragondice.dragondicefinal.service.race.RaceService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/app")

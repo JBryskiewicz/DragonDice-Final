@@ -3,15 +3,15 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
 >
-<head th:replace="fragments/header :: head"></head>
+<head th:replace="/fragments/header :: head"></head>
 <body>
 <div class="container-fluid position-relative d-flex p-0">
-    <div th:replace="fragments/spinner :: spinner"></div>
-    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <div th:replace="/fragments/spinner :: spinner"></div>
+    <div th:replace="/fragments/sidebar :: sidebar"></div>
 
     <!-- Content Start -->
     <div class="content">
-        <nav th:replace="fragments/navbar :: navbar"></nav>
+        <nav th:replace="/fragments/navbar :: navbar"></nav>
 
         <!-- Character Window Start -->
         <div class="container-fluid pt-4 px-4">
@@ -45,13 +45,13 @@
             </div>
         </div>
         <!-- Character Window End -->
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="/fragments/footer :: footer"></div>
     </div>
     <!-- Content End -->
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
-<div th:replace="fragments/javascript :: javascript"></div>
+<div th:replace="/fragments/javascript :: javascript"></div>
 </body>
 </html>

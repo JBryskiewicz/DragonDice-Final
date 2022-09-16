@@ -1,0 +1,102 @@
+
+<!--TODO: Thymeleaf equivalent of validation error that will be displayed upon error in validation-->
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+>
+<head th:replace="/fragments/header :: head"></head>
+<body>
+<div class="container-fluid position-relative d-flex p-0">
+    <div th:replace="/fragments/spinner :: spinner"></div>
+    <div th:replace="/fragments/sidebar :: sidebar"></div>
+
+    <!-- Content Start -->
+    <div class="content">
+        <nav th:replace="/fragments/navbar :: navbar"></nav>
+
+        <!-- Character Creator -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-secondary rounded h-100 p-4">
+
+                        <form th:action="@{/app/character-creator-step-1-result}" th:object="${character}" method="post">
+
+                            <p>HINT: To create new character, name and age fields must be filled, additionally min age is 1.
+                                Anything else can be added later in edit window.</p>
+
+                            <div class="form-floating mb-3">
+                                <!-- !character name input! -->
+                                <input th:field="*{name}" class="form-control" id="floatingInput" placeholder="Character Name"/>
+                                <label for="floatingInput">Character Name</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <!-- !character age input! -->
+                                <input th:field="*{age}" type="number" class="form-control" id="floatingInput" placeholder="Character Age"/>
+                                <label for="floatingInput">Character Age</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <!-- !character backstory input! -->
+                                <textarea th:field="*{backstory}" class="form-control" placeholder="Backstory"
+                                               id="floatingTextarea" style="height: 300px;"></textarea>
+                                <label for="floatingTextarea">Backstory</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select th:field="*{alignment}" class="form-select" id="floatingSelect"
+                                        aria-label="Floating label select example">
+                                    <option selected value="Neutral">Neutral</option>
+                                    <option value="Lawful Good">Lawful Good</option>
+                                    <option value="Lawful Neutral">Lawful Neutral</option>
+                                    <option value="Lawful Evil">Lawful Evil</option>
+                                    <option value="Neutral Good">Neutral Good</option>
+                                    <option value="Neutral Evil">Neutral Evil</option>
+                                    <option value="Chaotic Good">Chaotic Good</option>
+                                    <option value="Chaotic Neutral">Chaotic Neutral</option>
+                                    <option value="Chaotic Evil">Chaotic Evil</option>
+                                </select>
+                                <label for="floatingSelect">Select your alignment</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select name="background" class="form-select" id="floatingSelect"
+                                        aria-label="Floating label select example">
+                                    <option selected></option>
+                                        <option th:each="b: ${background}" th:value="${b.id}" th:text="${b.name}"></option>
+                                </select>
+                                <label for="floatingSelect">Select your background</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select name="race" class="form-select" id="floatingSelect"
+                                        aria-label="Floating label select example">
+                                    <option selected></option>
+                                        <option th:each="r: ${race}" th:value="${r.id}" th:text="${r.name}"></option>
+                                </select>
+                                <label for="floatingSelect">Select your Race</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Next</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Character Creator End -->
+
+        <div th:replace="/fragments/footer :: footer"></div>
+    </div>
+    <!-- Content End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+<div th:replace="/fragments/javascript :: javascript"></div>
+</body>
+</html>

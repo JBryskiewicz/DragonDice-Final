@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.dragondice.dragondicefinal.domain.user.CurrentUser;
 import pl.dragondice.dragondicefinal.service.character_core.CharacterCoreService;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/app")
 @AllArgsConstructor
@@ -21,7 +19,7 @@ public class AppController {
     public String charSelect(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
         currentUserName(model, currentUser);
         model.addAttribute("characters", characterService.findAllByUser(currentUser.getUser()));
-        return "character_select";
+        return "character_select/select";
     }
 
     /* ! SUPPORT METHOD SECTION - START ! */

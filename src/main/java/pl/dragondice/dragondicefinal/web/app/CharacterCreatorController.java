@@ -32,7 +32,7 @@ public class CharacterCreatorController {
     public String CharacterCreatorStepOne(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         currentUserName(model, currentUser);
         creatorStepOneModelAttributes(model);
-        return "/app/character_creator_1";
+        return "character_creator/creator_1";
     }
 
     @PostMapping("/character-creator-step-1-result")
@@ -41,7 +41,7 @@ public class CharacterCreatorController {
         if (result.hasErrors()) {
             currentUserName(model, currentUser);
             creatorStepOneModelAttributes(model);
-            return "/app/character_creator_1";
+            return "character_creator/creator_1";
         }
         core.setUser(currentUser.getUser());
         core.setStats(defaultStats());
@@ -54,7 +54,7 @@ public class CharacterCreatorController {
                                           @PathVariable long id) {
         currentUserName(model, currentUser);
         creatorStepTwoModelAttributes(model, id);
-        return "/app/character_creator_2";
+        return "character_creator/creator_2";
     }
 
     @PostMapping("/character-creator-step-2-result")
@@ -64,7 +64,7 @@ public class CharacterCreatorController {
         if (result.hasErrors()) {
             currentUserName(model, currentUser);
             creatorStepTwoModelAttributes(model, id);
-            return "/app/character_creator_2";
+            return "character_creator/creator_2";
         }
         CharacterCore core = characterService.findById(id).get();
         statistics.setProficiency(ModifiersDefiner.proficiency(statistics.getLevel()));
@@ -81,7 +81,7 @@ public class CharacterCreatorController {
                                            @PathVariable long id){
         currentUserName(model, currentUser);
         creatorStepFourModelAttributes(model, id);
-        return "/app/character_creator_4";
+        return "character_creator/creator_4";
     }
 
     @PostMapping("/character-createor-step-4-result")

@@ -27,7 +27,7 @@ public class RegisterController {
     @PostMapping("/register-result")
     public String registerResult(@Valid User user, BindingResult result){
         if (result.hasErrors()){
-            return "/auth/register";
+            return "auth/register";
         }
         userService.saveUser(user);
         return "redirect:/login-section/login";

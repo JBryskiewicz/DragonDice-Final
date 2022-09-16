@@ -21,7 +21,7 @@ public class AppController {
     public String charSelect(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
         currentUserName(model, currentUser);
         model.addAttribute("characters", characterService.findAllByUser(currentUser.getUser()));
-        return "/app/character_select";
+        return "character_select";
     }
 
     /* ! SUPPORT METHOD SECTION - START ! */

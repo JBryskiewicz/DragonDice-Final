@@ -25,13 +25,14 @@
                         <p>HINT: According to rules for each Ability Score Increase level, you can either
                             choose score increase or feat. You cannot choose both of them.</p>
 
-                        <div th:each="i : ${increases}">
+                        <div th:each="i, iter : ${increases}">
                             <h5>Ability Score Improvement / Feat</h5>
                             <!--SPACE FOR FEAT BUTTON-->
                             <div>
                                 <div class="form-floating mb-3">
 
-                                <a th:href="@{/app/add-feat/${charId}}" class="btn btn-primary rounded-pill m-2">
+                                <a th:href="@{'/app/add-feat/' + ${charId} + '/' + ${iter.index + 1}}"
+                                   class="btn btn-primary rounded-pill m-2">
                                     Choose Feat
                                 </a>
 
@@ -86,7 +87,6 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <!--{id}(id=${category.idCategory})}"-->
                                     <a th:href="@{'/app/score-increase-add/' + ${i.getId()} + '/' + ${charId}}"
                                     class="btn btn-primary rounded-pill m-2">
                                         Add Score Increase

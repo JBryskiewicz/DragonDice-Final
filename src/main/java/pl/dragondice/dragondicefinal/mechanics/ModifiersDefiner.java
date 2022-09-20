@@ -1,5 +1,5 @@
 package pl.dragondice.dragondicefinal.mechanics;
-
+//TODO Make it look better than that if whenever possible
 public class ModifiersDefiner {
     /* checks ability score and return modifier that will be added to "dice rolls" */
     public static int abilityModifier(int abilityScore) {
@@ -44,5 +44,31 @@ public class ModifiersDefiner {
         } else {
             return 6;
         }
+    }
+
+    public static int checkLevel(int characterLevel) {
+        System.out.println("THIS IS LEVEL CHECK IN MOD DEFINER: "+characterLevel);
+        int numberOfIncreases;
+        if (characterLevel >= 19) {
+            numberOfIncreases = 8;
+        } else if (characterLevel >= 16) {
+            numberOfIncreases = 7;
+        } else if (characterLevel >= 14) {
+            numberOfIncreases = 6;
+        } else if (characterLevel >= 12) {
+            numberOfIncreases = 5;
+        } else if (characterLevel >= 10) {
+            numberOfIncreases = 4;
+        } else if (characterLevel >= 8) {
+            numberOfIncreases = 3;
+        } else if (characterLevel >= 6) {
+            numberOfIncreases = 2;
+        } else if (characterLevel >= 4) {
+            numberOfIncreases = 1;
+        } else {
+            numberOfIncreases = 0;
+        }
+        System.out.println("THIS IS NUMBER OF INCREASES CHECK: "+numberOfIncreases);
+        return numberOfIncreases;
     }
 }

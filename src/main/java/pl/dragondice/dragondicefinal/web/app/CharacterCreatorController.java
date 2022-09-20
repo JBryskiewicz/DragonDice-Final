@@ -8,25 +8,37 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.dragondice.dragondicefinal.domain.user.CurrentUser;
 import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterCore;
+import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterFeats;
+import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterScoreIncrease;
 import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterStatistics;
 import pl.dragondice.dragondicefinal.mechanics.ModifiersDefiner;
 import pl.dragondice.dragondicefinal.service.background.BackgroundService;
 import pl.dragondice.dragondicefinal.service.character_core.CharacterCoreService;
 import pl.dragondice.dragondicefinal.service.character_stats.CharacterStatsService;
-import pl.dragondice.dragondicefinal.service.feats.FeatService;
 import pl.dragondice.dragondicefinal.service.race.RaceService;
+import pl.dragondice.dragondicefinal.service.score_increase.ScoreIncreaseService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/app")
 @AllArgsConstructor
 public class CharacterCreatorController {
+    private static final int DEFAULT_LEVEL = 1;
+    private static final int DEFAULT_PROFICIENCY = 2;
+    private static final int DEFAULT_ABILITY_SCORE = 8;
+    private static final int DEFAULT_SCORE_INCREASE = 0;
+
     private final CharacterCoreService characterService;
     private final CharacterStatsService statsService;
+    private final ScoreIncreaseService increaseService;
     private final RaceService raceService;
     private final BackgroundService backgroundService;
-    private final FeatService featService;
+
+    private List<CharacterFeats> featsList;
+    private List<CharacterScoreIncrease> scoreIncreaseList;
 
     @GetMapping("/character-creator-step-1")
     public String CharacterCreatorStepOne(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
@@ -43,8 +55,11 @@ public class CharacterCreatorController {
             creatorStepOneModelAttributes(model);
             return "character_creator/creator_1";
         }
+        featsList = new ArrayList<>();
         core.setUser(currentUser.getUser());
         core.setStats(defaultStats());
+        core.setIncreases(defaultScoreIncreases());
+        core.setFeats(featsList);
         characterService.save(core);
         return "redirect:/app/character-creator-step-2/" + core.getId();
     }
@@ -71,38 +86,37 @@ public class CharacterCreatorController {
         statsService.save(statistics);
         core.setStats(statistics);
         characterService.editCharacter(core);
-        return "redirect:/app/character-creator-step-4/"+id;
+        return "redirect:/app/character-creator-step-4/" + id;
     }
 
     //TODO implement character-creator-step-3 when CharacterClass entity is created
 
     @GetMapping("/character-creator-step-4/{id}")
     public String CharacterCreatorStepFour(@AuthenticationPrincipal CurrentUser currentUser, Model model,
-                                           @PathVariable long id){
+                                           @PathVariable long id) {
         currentUserName(model, currentUser);
         creatorStepFourModelAttributes(model, id);
         return "character_creator/creator_4";
     }
 
-    @PostMapping("/character-createor-step-4-result")
-    public String CharacterCreatorStepFourResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
-                                                 @RequestParam long id){
-        //TODO method must process both score increases and / or feats wrap them into Lists and save to Character class
-
-        //TODO redirect to step-5 instead when inventory/items are implemented
-        return "redirect:/app/select";
+    @GetMapping("/score-increase-add/{increaseId}/{charId}")
+    public String addScoreIncrease(@AuthenticationPrincipal CurrentUser currentUser, Model model,
+                                   @PathVariable long increaseId, @PathVariable long charId){
+        currentUserName(model, currentUser);
+        model.addAttribute("increase", increaseService.findById(increaseId).get());
+        model.addAttribute("charId", charId);
+        return "character_creator/creator_score_increase";
+    }
+    @PostMapping("/score-increase-add-result")
+    public String addScoreIncreaseResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
+                                         @RequestParam long charId,@Valid CharacterScoreIncrease increase){
+        characterService.editCharacterIncrease(increase);
+        currentUserName(model, currentUser);
+        creatorStepFourModelAttributes(model, charId);
+        return "character_creator/creator_4";
     }
 
-    /* ! SUPPORT METHOD SECTION - START ! */
-
-    private static final int DEFAULT_LEVEL = 1;
-    private static final int STARTING_PROFICIENCY = 2;
-    private static final int DEFAULT_STR = 8;
-    private static final int DEFAULT_DEX = 8;
-    private static final int DEFAULT_CON = 8;
-    private static final int DEFAULT_INT = 8;
-    private static final int DEFAULT_WIS = 8;
-    private static final int DEFAULT_CHA = 8;
+    /* !SUPPORT METHOD SECTION STARTS HERE! */
 
     public void currentUserName(Model model, CurrentUser currentUser) {
         String username = currentUser.getUser().getUsername();
@@ -115,18 +129,36 @@ public class CharacterCreatorController {
         model.addAttribute("character", new CharacterCore());
     }
 
-    public CharacterStatistics defaultStats(){
+    public CharacterStatistics defaultStats() {
         return statsService.save(
                 new CharacterStatistics(
-                DEFAULT_LEVEL,
-                STARTING_PROFICIENCY,
-                DEFAULT_STR,
-                DEFAULT_DEX,
-                DEFAULT_CON,
-                DEFAULT_INT,
-                DEFAULT_WIS,
-                DEFAULT_CHA
+                        DEFAULT_LEVEL,
+                        DEFAULT_PROFICIENCY,
+                        DEFAULT_ABILITY_SCORE,  //Strength
+                        DEFAULT_ABILITY_SCORE,  //Dexterity
+                        DEFAULT_ABILITY_SCORE,  //Constitution
+                        DEFAULT_ABILITY_SCORE,  //Intelligence
+                        DEFAULT_ABILITY_SCORE,  //Wisdom
+                        DEFAULT_ABILITY_SCORE   //Charisma
                 ));
+    }
+
+    public List<CharacterScoreIncrease> defaultScoreIncreases() {
+        List<CharacterScoreIncrease> increases = new ArrayList<>();
+        for (int i = 1; i <= 8; i++) {
+            increases.add(
+                    increaseService.save(
+                            new CharacterScoreIncrease(
+                                    i,                      //Index number to identify level of score increase
+                                    DEFAULT_SCORE_INCREASE, //Strength
+                                    DEFAULT_SCORE_INCREASE, //Dexterity
+                                    DEFAULT_SCORE_INCREASE, //Constitution
+                                    DEFAULT_SCORE_INCREASE, //Intelligence
+                                    DEFAULT_SCORE_INCREASE, //Wisdom
+                                    DEFAULT_SCORE_INCREASE  //Charisma
+                            )));
+        }
+        return increases;
     }
 
     public void creatorStepTwoModelAttributes(Model model, long id) {
@@ -135,13 +167,12 @@ public class CharacterCreatorController {
     }
 
     public void creatorStepFourModelAttributes(Model model, long id){
-        //TODO when class is implemented pass attribute Fighter class for special increase condition on lvl 6 and 14
-        //TODO also Rogue class for special condition at lvl 10
-        model.addAttribute("lvl", characterService.findById(id).get().getStats().getLevel());
-//        model.addAttribute("increase", scoreIncreaseListAttribute());
-        model.addAttribute("feats", featService.findAll());
-        model.addAttribute("charId", id);
+        CharacterCore core = characterService.findById(id).get();
+        int levelCheck = ModifiersDefiner.checkLevel(core.getStats().getLevel());
+        scoreIncreaseList = characterService.findIncreasesByCoreIdAccordingToLevel(id, levelCheck);
+        model.addAttribute("increases", scoreIncreaseList);
+        model.addAttribute("feats", core.getFeats());
+        model.addAttribute("charId", core.getId());
     }
-
 
 }

@@ -1,0 +1,103 @@
+<!--TODO: Thymeleaf equivalent of validation error that will be displayed upon error in validation-->
+<!--TODO Complete rework of this form to create better solution to this long lasting problem-->
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+>
+<head th:replace="/fragments/header :: head"></head>
+<body>
+<div class="container-fluid position-relative d-flex p-0">
+    <div th:replace="/fragments/spinner :: spinner"></div>
+    <div th:replace="/fragments/sidebar :: sidebar"></div>
+
+    <!-- Content Start -->
+    <div class="content">
+        <nav th:replace="/fragments/navbar :: navbar"></nav>
+
+        <!-- Character Creator -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-secondary rounded h-100 p-4">
+
+                        <p>HINT: According to rules, you can only choose 2 points in one ability score, or 1 point into
+                            one ability score and 1 into another.
+                            You cannot increase your ability score above 20 with this feature.</p>
+
+                        <div>
+                            <!-- SPACE FOR SCORE INCREASE -->
+                            <div id="lvl-4-increase">
+                                <form th:object="${increase}" th:action="@{/app/score-increase-add-result}" method="post">
+                                <div class="bg-secondary rounded h-100 p-4"><h6>Ability Score Increase</h6>
+                                    <table class="table table-borderless">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">STR</th>
+                                            <th scope="col">DEX</th>
+                                            <th scope="col">CON</th>
+                                            <th scope="col">INT</th>
+                                            <th scope="col">WIS</th>
+                                            <th scope="col">CHA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-floating mb-3">
+                                                    <input th:field="*{strIncrease}" th:text="${increase.getStrIncrease()}" type="number"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-floating mb-3">
+                                                    <input th:field="*{dexIncrease}" th:text="${increase.getDexIncrease()}" type="number"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-floating mb-3">
+                                                    <input th:field="*{conIncrease}" th:text="${increase.getConIncrease()}" type="number"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-floating mb-3">
+                                                    <input th:field="*{intIncrease}" th:text="${increase.getIntIncrease()}" type="number"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-floating mb-3">
+                                                    <input th:field="*{wisIncrease}" th:text="${increase.getWisIncrease()}" type="number"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-floating mb-3">
+                                                    <input th:field="*{chaIncrease}" th:text="${increase.getChaIncrease()}" type="number"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" th:field="*{id}" th:value="${increase.getId()}">
+                                    <input type="hidden" th:field="*{indexNumber}" th:value="${increase.getIndexNumber()}">
+                                    <input type="hidden" th:value="${charId}" th:name="charId">
+                                    <button type="submit" class="btn btn-primary">Done</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Character Creator End -->
+
+        <div th:replace="/fragments/footer :: footer"></div>
+    </div>
+    <!-- Content End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+<div th:replace="/fragments/javascript :: javascript"></div>
+</body>
+</html>

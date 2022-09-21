@@ -7,10 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.dragondice.dragondicefinal.domain.user.CurrentUser;
-import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterCore;
-import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterFeats;
-import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterScoreIncrease;
-import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterStatistics;
+import pl.dragondice.dragondicefinal.domain.user_character_structure.*;
 import pl.dragondice.dragondicefinal.mechanics.ModifiersDefiner;
 import pl.dragondice.dragondicefinal.service.background.BackgroundService;
 import pl.dragondice.dragondicefinal.service.character_core.CharacterCoreService;
@@ -21,11 +18,14 @@ import pl.dragondice.dragondicefinal.service.score_increase.ScoreIncreaseService
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/app")
 @AllArgsConstructor
 public class CharacterCreatorController {
+
+    private static final long DEFAULT_SELECTION = 1L;
     private static final int DEFAULT_LEVEL = 1;
     private static final int DEFAULT_PROFICIENCY = 2;
     private static final int DEFAULT_ABILITY_SCORE = 8;
@@ -115,6 +115,8 @@ public class CharacterCreatorController {
         return "character_creator/creator_4";
     }
 
+    //TODO Implement creator-step-5 when items.class is created
+
     /* !SUPPORT METHOD SECTION STARTS HERE! */
 
     public void currentUserName(Model model, CurrentUser currentUser) {
@@ -123,8 +125,22 @@ public class CharacterCreatorController {
     }
 
     public void creatorStepOneModelAttributes(Model model) {
-        model.addAttribute("race", raceService.findAll());
-        model.addAttribute("background", backgroundService.findAll());
+        List<CharacterRace> raceList = raceService.findAll();
+        List<CharacterRace> raceSelection = raceList.stream()
+                .skip(DEFAULT_SELECTION)
+                .collect(Collectors.toList());
+        CharacterRace defaultRace = raceList.stream().findFirst().get();
+
+        List<CharacterBackground> backgroundList = backgroundService.findAll();
+        List<CharacterBackground> backgroundSelection = backgroundList.stream()
+                .skip(DEFAULT_SELECTION)
+                .collect(Collectors.toList());
+        CharacterBackground defaultBackground = backgroundList.stream().findFirst().get();
+
+        model.addAttribute("defaultRace", defaultRace);
+        model.addAttribute("race", raceSelection);
+        model.addAttribute("defaultBackground", defaultBackground);
+        model.addAttribute("background", backgroundSelection);
         model.addAttribute("character", new CharacterCore());
     }
 

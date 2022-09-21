@@ -14,4 +14,5 @@ public interface CharacterCoreService {
     void editCharacter(CharacterCore characterCore);
     void editCharacterIncrease(CharacterScoreIncrease increase);
     List<CharacterScoreIncrease> findIncreasesByCoreIdAccordingToLevel(long id, int leveLimit);
+    void delete(CharacterCore characterCore);
 }

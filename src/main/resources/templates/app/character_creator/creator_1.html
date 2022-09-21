@@ -65,7 +65,7 @@
                             <div class="form-floating mb-3">
                                 <select name="background" class="form-select" id="floatingSelect"
                                         aria-label="Floating label select example">
-                                    <option selected></option>
+                                    <option selected th:value="${defaultBackground.getId()}" th:text="${defaultBackground.getName()}"></option>
                                         <option th:each="b: ${background}" th:value="${b.id}" th:text="${b.name}"></option>
                                 </select>
                                 <label for="floatingSelect">Select your background</label>
@@ -74,7 +74,7 @@
                             <div class="form-floating mb-3">
                                 <select name="race" class="form-select" id="floatingSelect"
                                         aria-label="Floating label select example">
-                                    <option selected></option>
+                                    <option selected th:value="${defaultRace.getId()}" th:text="${defaultRace.getName()}"></option>
                                         <option th:each="r: ${race}" th:value="${r.id}" th:text="${r.name}"></option>
                                 </select>
                                 <label for="floatingSelect">Select your Race</label>

@@ -40,7 +40,7 @@ public class CharacterCore {
     private CharacterBackground background;
     @ManyToMany
     private List<CharacterFeats> feats;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<CharacterScoreIncrease> increases;
 
     //TODO Character class implementation

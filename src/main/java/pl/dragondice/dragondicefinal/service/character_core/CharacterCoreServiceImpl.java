@@ -53,5 +53,10 @@ public class CharacterCoreServiceImpl implements CharacterCoreService{
                 .setMaxResults(leveLimit).getResultList();
     }
 
+    @Override
+    public void delete(CharacterCore characterCore) {
+        this.characterRepository.delete(characterCore);
+    }
+
 
 }

@@ -10,4 +10,5 @@ public interface ScoreIncreaseService {
     void saveAll(List<CharacterScoreIncrease> increases);
     void editScoreIncrease(CharacterScoreIncrease increase);
     Optional<CharacterScoreIncrease> findById(long id);
+    void deleteCharacterIncreases(List<CharacterScoreIncrease> increaseList);
 }

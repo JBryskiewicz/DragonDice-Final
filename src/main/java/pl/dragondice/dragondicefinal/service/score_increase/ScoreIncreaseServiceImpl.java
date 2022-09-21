@@ -38,4 +38,9 @@ public class ScoreIncreaseServiceImpl implements ScoreIncreaseService{
     public Optional<CharacterScoreIncrease> findById(long id) {
         return this.increaseRepository.findById(id);
     }
+
+    @Override
+    public void deleteCharacterIncreases(List<CharacterScoreIncrease> increaseList) {
+        this.increaseRepository.deleteAll(increaseList);
+    }
 }

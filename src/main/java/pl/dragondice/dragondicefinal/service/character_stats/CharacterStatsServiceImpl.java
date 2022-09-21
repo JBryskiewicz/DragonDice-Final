@@ -23,4 +23,9 @@ public class CharacterStatsServiceImpl implements CharacterStatsService{
     public CharacterStatistics save(CharacterStatistics statistics) {
         return this.statsRepository.save(statistics);
     }
+
+    @Override
+    public void delete(CharacterStatistics statistics) {
+        this.statsRepository.delete(statistics);
+    }
 }

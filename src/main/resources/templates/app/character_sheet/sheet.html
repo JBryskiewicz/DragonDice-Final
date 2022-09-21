@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+>
+<head th:replace="/fragments/header :: head"></head>
+<body>
+<div class="container-fluid position-relative d-flex p-0">
+    <div th:replace="/fragments/spinner :: spinner"></div>
+    <div th:replace="/fragments/sidebar :: sidebar"></div>
+
+    <!-- Content Start -->
+    <div class="content">
+        <nav th:replace="/fragments/navbar :: navbar"></nav>
+
+        <!-- Character Sheet Start -->
+
+        <!-- Character Info Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="dice" id="status"></div>
+            <div class="bg-secondary text-center rounded p-4">
+<!--                <a style="color: #d41414; font-size: 20px;">Name:&nbsp;</a>-->
+                <a style="color: #d41414; font-size: 20px;" th:text="'Name: ' + ${character.name}"></a>
+                <a>  |  </a>
+                <a style="color: #0d6efd; font-size: 20px;">Class: Rogue / Scout</a>
+                <a>  |  </a>
+<!--                <a style="color: #d41414; font-size: 20px;">Level:&nbsp;</a>-->
+                <a style="color: #d41414; font-size: 20px;" th:text="'Level: ' + ${character.getStats().level}"></a>
+            </div>
+        </div>
+        <!-- Character Info End -->
+
+        <!-- Abilities block Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-secondary text-center rounded p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <table class="table table-borderless">
+                                <thead>
+                                <tr>
+                                    <th scope="col">STR</th><th scope="col">DEX</th><th scope="col">CON</th>
+                                    <th scope="col">INT</th><th scope="col">WIS</th><th scope="col">CHA</th>
+                                    <th scope="col">Initiative</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${strAbilityScore}"></td>
+                                    <td th:text="${dexAbilityScore}"></td>
+                                    <td th:text="${conAbilityScore}"></td>
+                                    <td th:text="${intAbilityScore}"></td>
+                                    <td th:text="${wisAbilityScore}"></td>
+                                    <td th:text="${chaAbilityScore}"></td>
+
+                                    <td><button th:text="${dexMod}"
+                                                th:onclick="diceRoller(${dexMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><button th:text="${strMod}"
+                                                th:onclick="diceRoller(${strMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                    <td><button th:text="${dexMod}"
+                                                th:onclick="diceRoller(${dexMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                    <td><button th:text="${conMod}"
+                                                th:onclick="diceRoller(${conMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                    <td><button th:text="${intMod}"
+                                                th:onclick="diceRoller(${intMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                    <td><button th:text="${wisMod}"
+                                                th:onclick="diceRoller(${wisMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                    <td><button th:text="${chaMod}"
+                                                th:onclick="diceRoller(${chaMod})"
+                                                type="button" class="btn btn-danger m-2"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Abilities block end -->
+
+                <!-- Basics (HP, walking) Start -->
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-secondary text-center rounded p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <table class="table table-borderless">
+                                <thead>
+                                <tr>
+                                    <!-- Hit points will be introduced with class update -->
+                                    <th scope="col">Proficiency</th><th scope="col">Walking</th><th scope="col">Hit Points</th>
+                                    <th scope="col">Modify:</th>
+                                    <th scope="col"><button type="button" class="btn btn-danger m-2">plus</button></th>
+                                    <th scope="col"><button type="button" class="btn btn-danger m-2">minus</button></th>
+                                    <th>Armor Class</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${character.getStats().getProficiency()}"></td><td th:text="${character.race.getWalkingSpeed() + 'ft'}"></td><td>29 / 51</td>
+                                    <td><form><input name="health" type="text" class="form-control"></form></td>
+                                    <td></td><td></td><td th:text="${ArmorClass}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Basics end -->
+
+        <!-- Skills and saving throws -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-6 col-xl-3">
+                    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                        <div class="ms-3">
+                            <table class="table">
+                                <thead>
+                                <tr><th scope="col">Saving Throws</th><th scope="col">Modifier</th></tr>
+                                </thead>
+                                <tbody>
+                                <!-- In later versions proficiency will be added for certain saving throws --->
+                                <tr><td>Strength</td><td><button th:onclick="diceRoller(${strMod})" th:text="${strMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Dexterity</td><td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></button></td></tr>
+                                <tr><td>Constitution</td><td><button th:onclick="diceRoller(${conMod})" th:text="${conMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Intelligence</td><td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Wisdom</td><td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Charisma</td><td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                </tbody>
+                            </table>
+
+                            <br/><br/>
+
+                            <!-- In later versions proficiency will be picked for certain passive senses --->
+                            <table class="table">
+                                <thead>
+                                <tr><th scope="col">Passive Senses</th><th scope="col">Roll</th></tr>
+                                </thead>
+                                <tbody>
+                                <tr><td>Perception</td><td th:text="${passivePerception}"/></tr>
+                                <tr><td>Investigation</td><td th:text="${passiveInvestigation}"/></tr>
+                                <tr><td>Insight</td><td th:text="${passiveInsight}"/></tr>
+                                </tbody>
+                            </table>
+
+                            <br/><br/>
+
+                            <table class="table">
+                                <thead>
+                                <tr><th scope="col">Proficiencies</th><th scope="col"></th></tr>
+                                </thead>
+                                <tbody>
+                                <tr><td>Armor:</td><td>Light</td></tr>
+                                <tr><td>Weapons:</td><td>Simple, Crossbows, Rapier, longsword, Hand</td></tr>
+                                <tr><td>Tools:</td><td>Thieves' Tools, Poisoner kit, Playing Cards Set</td></tr>
+                                <tr><td>Languages:</td><td>Common, Goblin, Undercommon</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-3">
+                    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                        <div class="ms-3">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Skill</th><th scope="col">Modifier</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Acrobatics</td>
+                                    <td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Animal Handling</td>
+                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Arcana</td>
+                                    <td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Athletics</td>
+                                    <td><button th:onclick="diceRoller(${strMod})" th:text="${strMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Deception</td>
+                                    <td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>History</td>
+                                    <td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Insight</td>
+                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Intimidation</td><td>
+                                    <button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Investigation</td><td>
+                                    <button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Medicine</td><td>
+                                    <button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Nature</td><td>
+                                    <button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Perception</td>
+                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Performance</td>
+                                    <td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Persuasion</td>
+                                    <td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Religion</td>
+                                    <td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Sleight of Hand</td>
+                                    <td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Stealth</td>
+                                    <td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Survival</td>
+                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Skills and saving throws end-->
+
+        <!-- Character Sheet End -->
+
+        <div th:replace="/fragments/footer :: footer"></div>
+    </div>
+    <!-- Content End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+<div th:replace="/fragments/javascript :: javascript"></div>
+</body>
+</html>

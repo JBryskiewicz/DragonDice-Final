@@ -103,8 +103,7 @@ public class CharacterCreatorController {
     public String addScoreIncrease(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                    @PathVariable long increaseId, @PathVariable long charId){
         currentUserName(model, currentUser);
-        model.addAttribute("increase", increaseService.findById(increaseId).get());
-        model.addAttribute("charId", charId);
+        chooseScoreIncreaseModelAttributes(model, increaseId, charId);
         return "character_creator/creator_score_increase";
     }
     @PostMapping("/score-increase-add-result")
@@ -173,6 +172,11 @@ public class CharacterCreatorController {
         model.addAttribute("increases", scoreIncreaseList);
         model.addAttribute("feats", core.getFeats());
         model.addAttribute("charId", core.getId());
+    }
+
+    public void chooseScoreIncreaseModelAttributes(Model model, long increaseId, long charId){
+        model.addAttribute("increase", increaseService.findById(increaseId).get());
+        model.addAttribute("charId", charId);
     }
 
 }

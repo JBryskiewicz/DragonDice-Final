@@ -33,9 +33,9 @@
                                     <span>Class: Rogue / Scout</span>
 
                                     <div class="d-flex align-items-center justify-content-between mb-2">
-                                        <a th:href="@{/app/character-sheet/${character.id}}">view</a>
-                                        <a th:href="@{/app/character-editor/${character.id}}">edit</a>
-                                        <a th:href="@{/app/character-delete/${character.id}}">delete</a>
+                                        <a th:href="@{'/app/character-sheet/' + ${character.id}}">view</a>
+                                        <a th:href="@{'/app/character-editor/' + ${character.id}}">edit</a>
+                                        <a th:href="@{'/app/character-delete/' + ${character.id}}">delete</a>
                                     </div>
                                 </div>
                             </div>

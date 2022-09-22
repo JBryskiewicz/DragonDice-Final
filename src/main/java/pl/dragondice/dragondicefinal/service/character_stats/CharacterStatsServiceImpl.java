@@ -28,4 +28,9 @@ public class CharacterStatsServiceImpl implements CharacterStatsService{
     public void delete(CharacterStatistics statistics) {
         this.statsRepository.delete(statistics);
     }
+
+    @Override
+    public void edit(CharacterStatistics statistics) {
+        this.entityManager.merge(statistics);
+    }
 }

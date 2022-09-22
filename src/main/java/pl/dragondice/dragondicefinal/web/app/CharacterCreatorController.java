@@ -39,6 +39,8 @@ public class CharacterCreatorController {
 
     private List<CharacterFeats> featsList;
     private List<CharacterScoreIncrease> scoreIncreaseList;
+    private List<CharacterBackground> backgroundList;
+    private List<CharacterRace> raceList;
 
     @GetMapping("/character-creator-step-1")
     public String CharacterCreatorStepOne(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
@@ -56,10 +58,10 @@ public class CharacterCreatorController {
             return "character_creator/creator_1";
         }
         featsList = new ArrayList<>();
-        core.setUser(currentUser.getUser());
+        core.setFeats(featsList);
         core.setStats(defaultStats());
         core.setIncreases(defaultScoreIncreases());
-        core.setFeats(featsList);
+        core.setUser(currentUser.getUser());
         characterService.save(core);
         return "redirect:/app/character-creator-step-2/" + core.getId();
     }
@@ -125,13 +127,13 @@ public class CharacterCreatorController {
     }
 
     public void creatorStepOneModelAttributes(Model model) {
-        List<CharacterRace> raceList = raceService.findAll();
+        raceList = raceService.findAll();
         List<CharacterRace> raceSelection = raceList.stream()
                 .skip(DEFAULT_SELECTION)
                 .collect(Collectors.toList());
         CharacterRace defaultRace = raceList.stream().findFirst().get();
 
-        List<CharacterBackground> backgroundList = backgroundService.findAll();
+        backgroundList = backgroundService.findAll();
         List<CharacterBackground> backgroundSelection = backgroundList.stream()
                 .skip(DEFAULT_SELECTION)
                 .collect(Collectors.toList());
@@ -164,7 +166,6 @@ public class CharacterCreatorController {
             increases.add(
                     increaseService.save(
                             new CharacterScoreIncrease(
-                                    i,                      //Index number to identify level of score increase
                                     DEFAULT_SCORE_INCREASE, //Strength
                                     DEFAULT_SCORE_INCREASE, //Dexterity
                                     DEFAULT_SCORE_INCREASE, //Constitution
@@ -187,7 +188,7 @@ public class CharacterCreatorController {
         scoreIncreaseList = characterService.findIncreasesByCoreIdAccordingToLevel(id, levelCheck);
         model.addAttribute("increases", scoreIncreaseList);
         model.addAttribute("feats", core.getFeats());
-        model.addAttribute("charId", core.getId());
+        model.addAttribute("charId", id);
     }
 
     public void chooseScoreIncreaseModelAttributes(Model model, long increaseId, long charId){

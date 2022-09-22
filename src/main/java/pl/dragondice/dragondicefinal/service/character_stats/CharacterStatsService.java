@@ -5,4 +5,5 @@ import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterSt
 public interface CharacterStatsService {
     CharacterStatistics save(CharacterStatistics statistics);
     void delete(CharacterStatistics statistics);
+    void edit(CharacterStatistics statistics);
 }

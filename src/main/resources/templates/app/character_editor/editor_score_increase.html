@@ -22,24 +22,14 @@
                 <div class="col-sm-12 col-xl-6">
                     <div class="bg-secondary rounded h-100 p-4">
 
-                        <p>HINT: According to rules for each Ability Score Increase level, you can either
-                            choose score increase or feat. You cannot choose both of them.</p>
+                        <p>HINT: According to rules, you can only choose 2 points in one ability score, or 1 point into
+                            one ability score and 1 into another.
+                            You cannot increase your ability score above 20 with this feature.</p>
 
-                        <div th:each="i, iter : ${increases}">
-                            <h5>Ability Score Improvement / Feat</h5>
-                            <!--SPACE FOR FEAT BUTTON-->
-                            <div>
-                                <div class="form-floating mb-3">
-                                <!--    TODO !skip feat select until you have proper idea!   -->
-                                <a th:href="@{'/app/add-feat/' + ${charId}}"
-                                   class="btn btn-primary rounded-pill m-2">
-                                    Choose Feat
-                                </a>
-
-                                </div>
-                            </div>
+                        <div>
                             <!-- SPACE FOR SCORE INCREASE -->
                             <div id="lvl-4-increase">
+                                <form th:object="${increase}" th:action="@{/app/score-increase-edit-result}" method="post">
                                 <div class="bg-secondary rounded h-100 p-4"><h6>Ability Score Increase</h6>
                                     <table class="table table-borderless">
                                         <thead>
@@ -56,45 +46,44 @@
                                         <tr>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <p th:text="${i.getStrIncrease()}"></p>
+                                                    <input th:field="*{strIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <p th:text="${i.getDexIncrease()}"></p>
+                                                    <input th:field="*{dexIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <p th:text="${i.getConIncrease()}"></p>
+                                                    <input th:field="*{conIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <p th:text="${i.getIntIncrease()}"></p>
+                                                    <input th:field="*{intIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <p th:text="${i.getWisIncrease()}"></p>
+                                                    <input th:field="*{wisIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <p th:text="${i.getChaIncrease()}"></p>
+                                                    <input th:field="*{chaIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <a th:href="@{'/app/score-increase-add/' + ${i.getId()} + '/' + ${charId}}"
-                                    class="btn btn-primary rounded-pill m-2">
-                                        Add Score Increase
-                                    </a>
+                                    <input type="hidden" th:field="*{id}" th:value="${increase.getId()}">
+                                    <input type="hidden" th:value="${charId}" th:name="charId">
+                                    <button type="submit" class="btn btn-primary">Done</button>
                                 </div>
+                                </form>
                             </div>
                         </div>
-                        <a th:href="@{/app/select}" class="btn btn-primary">Done</a>
                     </div>
                 </div>
             </div>

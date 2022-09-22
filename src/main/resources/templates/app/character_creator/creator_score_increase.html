@@ -46,39 +46,38 @@
                                         <tr>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <input th:field="*{strIncrease}" th:text="${increase.getStrIncrease()}" type="number"/>
+                                                    <input th:field="*{strIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <input th:field="*{dexIncrease}" th:text="${increase.getDexIncrease()}" type="number"/>
+                                                    <input th:field="*{dexIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <input th:field="*{conIncrease}" th:text="${increase.getConIncrease()}" type="number"/>
+                                                    <input th:field="*{conIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <input th:field="*{intIncrease}" th:text="${increase.getIntIncrease()}" type="number"/>
+                                                    <input th:field="*{intIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <input th:field="*{wisIncrease}" th:text="${increase.getWisIncrease()}" type="number"/>
+                                                    <input th:field="*{wisIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-floating mb-3">
-                                                    <input th:field="*{chaIncrease}" th:text="${increase.getChaIncrease()}" type="number"/>
+                                                    <input th:field="*{chaIncrease}" type="number"/>
                                                 </div>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                     <input type="hidden" th:field="*{id}" th:value="${increase.getId()}">
-                                    <input type="hidden" th:field="*{indexNumber}" th:value="${increase.getIndexNumber()}">
                                     <input type="hidden" th:value="${charId}" th:name="charId">
                                     <button type="submit" class="btn btn-primary">Done</button>
                                 </div>

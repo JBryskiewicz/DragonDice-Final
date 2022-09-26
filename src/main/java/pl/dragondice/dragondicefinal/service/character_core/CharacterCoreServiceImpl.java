@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dragondice.dragondicefinal.domain.user.User;
 import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterCore;
+import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterFeats;
 import pl.dragondice.dragondicefinal.domain.user_character_structure.CharacterScoreIncrease;
 import pl.dragondice.dragondicefinal.repository.character_core.CharacterCoreRepository;
 
@@ -50,6 +51,13 @@ public class CharacterCoreServiceImpl implements CharacterCoreService{
     public List<CharacterScoreIncrease> findIncreasesByCoreIdAccordingToLevel(long id, int leveLimit) {
         return entityManager
                 .createQuery("select c.increases from CharacterCore c where c.id =" + id)
+                .setMaxResults(leveLimit).getResultList();
+    }
+
+    @Override
+    public List<CharacterFeats> findFeatsByCoreIdAccordingToLevel(long id, int leveLimit) {
+        return entityManager
+                .createQuery("select c.feats from CharacterCore c where c.id =" + id)
                 .setMaxResults(leveLimit).getResultList();
     }
 

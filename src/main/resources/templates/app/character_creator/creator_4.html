@@ -19,6 +19,7 @@
         <!-- Character Creator -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
+                <!-- SCORE INCREASE SELECTION - START -->
                 <div class="col-sm-12 col-xl-6">
                     <div class="bg-secondary rounded h-100 p-4">
 
@@ -26,21 +27,9 @@
                             choose score increase or feat. You cannot choose both of them.</p>
 
                         <div th:each="i, iter : ${increases}">
-                            <h5>Ability Score Improvement / Feat</h5>
-                            <!--SPACE FOR FEAT BUTTON-->
-                            <div>
-                                <div class="form-floating mb-3">
-                                <!--    TODO !skip feat select until you have proper idea!   -->
-                                <a th:href="@{'/app/add-feat/' + ${charId}}"
-                                   class="btn btn-primary rounded-pill m-2">
-                                    Choose Feat
-                                </a>
-
-                                </div>
-                            </div>
-                            <!-- SPACE FOR SCORE INCREASE -->
+                            <h5>Ability Score Increase</h5>
                             <div id="lvl-4-increase">
-                                <div class="bg-secondary rounded h-100 p-4"><h6>Ability Score Increase</h6>
+                                <div class="bg-secondary rounded h-100 p-4">
                                     <table class="table table-borderless">
                                         <thead>
                                         <tr>
@@ -88,15 +77,48 @@
                                         </tbody>
                                     </table>
                                     <a th:href="@{'/app/score-increase-add/' + ${i.getId()} + '/' + ${charId}}"
-                                    class="btn btn-primary rounded-pill m-2">
+                                       class="btn btn-primary rounded-pill m-2">
                                         Add Score Increase
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <a th:href="@{/app/select}" class="btn btn-primary">Done</a>
                     </div>
                 </div>
+                <!-- SCORE INCREASE SELECTION - END -->
+
+                <!-- FEAT SELECTION FORM - START -->
+                <div class="col-sm-12 col-xl-6">
+                    <div class="bg-secondary rounded h-100 p-4">
+                        <form th:object="${featList}" th:action="@{/app/feat-selection-result}" th:method="post">
+
+                            <th:block th:each="feat, itemStat : ${featList.feats}">
+                                <h5>Feat</h5>
+                                <div>
+                                    <div class="form-floating mb-3">
+                                        <select th:name="|feats[${itemStat.index}]|" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                            <option selected th:value="${feat.id}" th:text="${feat.name}"/>
+                                            <option th:each="f : ${featSelection}" th:value="${f.id}" th:text="${f.name}"/>
+                                        </select>
+                                        <label for="floatingSelect">Select a Feat</label>
+                                    </div>
+                                </div>
+                            </th:block>
+
+                            <input type="hidden" th:value="${charId}" th:name="id">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th><button type="submit" class="btn btn-primary">Save Feats</button></th>
+                                    <th><p>&nbsp;</p></th>
+                                    <th><a th:href="@{/app/select}" class="btn btn-primary">Done</a></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <!-- FEAT SELECTION FORM - END -->
             </div>
         </div>
         <!-- Character Creator End -->

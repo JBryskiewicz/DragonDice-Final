@@ -9,6 +9,7 @@ import pl.dragondice.dragondicefinal.repository.feats.FeatRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,5 +22,10 @@ public class FeatServiceImpl implements FeatService{
     @Override
     public List<CharacterFeats> findAll() {
         return featRepository.findAll();
+    }
+
+    @Override
+    public Optional<CharacterFeats> findById(long id) {
+        return featRepository.findById(id);
     }
 }

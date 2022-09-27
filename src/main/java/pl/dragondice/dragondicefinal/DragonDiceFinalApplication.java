@@ -16,4 +16,11 @@ public class DragonDiceFinalApplication {
         SpringApplication.run(DragonDiceFinalApplication.class, args);
     }
 
+    //TODO
+    // form validation - display error on incorrect input
+    // interface for creator and editor controllers?
+    // change forgotten password via email
+    // fix feat list for saving and editing (incorrect display order)
+    // separate admin control panel from user app
+    // Make accounts active or inactive via enabled attribute
 }

@@ -26,10 +26,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/app/**").hasAnyRole("USER", "ADMIN")
-                .and().formLogin().loginPage("/login-section/login").defaultSuccessUrl("/app/select")
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                .antMatchers("/admin-app/**").hasAnyRole("ADMIN")
+
+                .and()
+                .formLogin()
+                .loginPage("/login-section/login")
+                .defaultSuccessUrl("/app/select")
+
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                 .logoutSuccessUrl("/homepage")
                 .permitAll()
-                .and().exceptionHandling().accessDeniedPage("/403");
+
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403");
     }
 }

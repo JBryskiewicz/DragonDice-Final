@@ -7,4 +7,5 @@ import pl.dragondice.dragondicefinal.domain.user.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
+    User findByEmail(String email);
 }

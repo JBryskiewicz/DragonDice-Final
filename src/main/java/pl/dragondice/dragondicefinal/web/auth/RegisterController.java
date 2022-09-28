@@ -9,6 +9,7 @@ import pl.dragondice.dragondicefinal.domain.user.User;
 import pl.dragondice.dragondicefinal.service.user.UserService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/register-section")
@@ -25,6 +26,9 @@ public class RegisterController {
     @PostMapping("/register-result")
     public String registerResult(@Valid User user, BindingResult result){
         if (result.hasErrors()){
+            return "auth/register";
+        }
+        if(user.getEmail().equals(userService.findByEmail(user.getEmail()))){
             return "auth/register";
         }
         userService.saveUser(user);

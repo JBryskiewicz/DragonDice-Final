@@ -102,5 +102,14 @@ public class UserServiceImpl implements UserService {
         entityManager.merge(user);
     }
 
+    @Override
+    public String findByEmail(String email) {
+        String existingEmail = userRepository.findByEmail(email).getEmail();
+        if(existingEmail.equals(null)){
+            return "DOES_NOT_EXIST";
+        }
+        return existingEmail;
+    }
+
 
 }

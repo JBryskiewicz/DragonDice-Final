@@ -8,5 +8,6 @@ public interface UserService {
     String confirmToken(String token);
     void editUser(User user);
     void softEditUser(User user);
+    String findByEmail(String email);
 
 }

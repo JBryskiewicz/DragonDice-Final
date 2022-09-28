@@ -14,6 +14,8 @@ import java.util.Set;
 
 public class SpringDataUserDetailsService implements UserDetailsService {
 
+    private static final String DISABLED_ACCOUNT_MASSAGE = "account is inactive";
+    private static final String NOT_FOUND_ACCOUNT_MASSAGE = "account does not exits";
     private UserService userService;
 
     @Autowired
@@ -25,10 +27,12 @@ public class SpringDataUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         User user = userService.findByUsername(username);
         if (user == null){
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(username + NOT_FOUND_ACCOUNT_MASSAGE);
+        }
+        if(user.getEnabled() == 0){
+            throw new UsernameNotFoundException(username + DISABLED_ACCOUNT_MASSAGE);
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
         user.getRoles().forEach(r ->
                 grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));
 

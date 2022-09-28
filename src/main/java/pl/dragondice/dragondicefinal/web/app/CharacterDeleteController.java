@@ -27,7 +27,7 @@ public class CharacterDeleteController {
 
     @GetMapping("/character-delete/{id}")
     public String characterDelete(@AuthenticationPrincipal CurrentUser currentUser, Model model, @PathVariable long id){
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         model.addAttribute("character", characterService.findById(id).get());
         return "character_delete/confirm_delete";
     }
@@ -41,12 +41,5 @@ public class CharacterDeleteController {
         statsService.delete(stats);
         increaseService.deleteCharacterIncreases(increaseList);
         return "redirect:/app/select";
-    }
-
-    /* SUPPORT METHOD SECTION */
-
-    public void currentUserName(Model model, CurrentUser currentUser){
-        String username = currentUser.getUser().getUsername();
-        model.addAttribute("user", username);
     }
 }

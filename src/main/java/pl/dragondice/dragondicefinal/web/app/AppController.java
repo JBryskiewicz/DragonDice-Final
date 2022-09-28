@@ -17,15 +17,8 @@ public class AppController {
 
     @GetMapping("/select")
     public String charSelect(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         model.addAttribute("characters", characterService.findAllByUser(currentUser.getUser()));
         return "character_select/select";
-    }
-
-    /* ! SUPPORT METHOD SECTION - START ! */
-
-    public void currentUserName(Model model, CurrentUser currentUser) {
-        String username = currentUser.getUser().getUsername();
-        model.addAttribute("user", username);
     }
 }

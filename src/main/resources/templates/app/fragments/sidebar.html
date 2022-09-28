@@ -7,6 +7,9 @@
         </a>
 
         <div class="navbar-nav w-100">
+            <th:block th:if="${CheckAdmin == 1}">
+            <a href="/admin-app/panel" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Admin Panel</a>
+            </th:block>
             <a href="/app/select" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Characters</a>
             <a href="/app/character-creator-step-1" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Create Character</a>
             <div class="nav-item dropdown">

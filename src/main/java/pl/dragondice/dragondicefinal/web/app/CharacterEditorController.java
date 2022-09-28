@@ -39,7 +39,7 @@ public class CharacterEditorController {
     @GetMapping("/character-editor-step-1/{id}")
     public String characterEditorStepOne(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                          @PathVariable long id){
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         editorStepOneModelAttributes(model, id);
         return "character_editor/editor_1";
     }
@@ -48,7 +48,7 @@ public class CharacterEditorController {
     public String characterEditorStepOneResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                                @Valid CharacterCore core, BindingResult result, @RequestParam long id){
         if(result.hasErrors()){
-            currentUserName(model, currentUser);
+            CurrentUserInfo.passModelAttributes(model, currentUser);
             editorStepOneModelAttributes(model, id);
             return "character_editor/editor_1";
         }
@@ -64,7 +64,7 @@ public class CharacterEditorController {
     @GetMapping("/character-editor-step-2/{id}")
     public String characterEditorStepTwo(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                          @PathVariable long id){
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         editorStepTwoModelAttributes(model, id);
         return "character_editor/editor_2";
     }
@@ -81,7 +81,7 @@ public class CharacterEditorController {
     @GetMapping("/character-editor-step-4/{id}")
     public String characterEditorStepFour(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                           @PathVariable long id){
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         editorStepFourModelAttributes(model, id);
         return "character_editor/editor_4";
     }
@@ -89,7 +89,7 @@ public class CharacterEditorController {
     @GetMapping("/score-increase-edit/{increaseId}/{charId}")
     public String addScoreIncrease(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                    @PathVariable long increaseId, @PathVariable long charId){
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         chooseScoreIncreaseModelAttributes(model, increaseId, charId);
         return "character_editor/editor_score_increase";
     }
@@ -97,17 +97,12 @@ public class CharacterEditorController {
     public String addScoreIncreaseResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                          @RequestParam long charId,@Valid CharacterScoreIncrease increase){
         characterService.editCharacterIncrease(increase);
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         editorStepFourModelAttributes(model, charId);
         return "character_creator/creator_4";
     }
 
     /* SUPPORT METHOD SECTION STARTS */
-
-    public void currentUserName(Model model, CurrentUser currentUser) {
-        String username = currentUser.getUser().getUsername();
-        model.addAttribute("user", username);
-    }
 
     public void editorStepOneModelAttributes(Model model, long id) {
         raceList = raceService.findAll();

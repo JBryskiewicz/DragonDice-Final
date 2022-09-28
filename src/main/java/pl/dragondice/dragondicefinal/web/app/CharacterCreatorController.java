@@ -47,7 +47,7 @@ public class CharacterCreatorController {
 
     @GetMapping("/character-creator-step-1")
     public String CharacterCreatorStepOne(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         creatorStepOneModelAttributes(model);
         return "character_creator/creator_1";
     }
@@ -56,7 +56,7 @@ public class CharacterCreatorController {
     public String CharacterCreatorStepOneResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                                 @Valid CharacterCore core, BindingResult result) {
         if (result.hasErrors()) {
-            currentUserName(model, currentUser);
+            CurrentUserInfo.passModelAttributes(model, currentUser);
             creatorStepOneModelAttributes(model);
             return "character_creator/creator_1";
         }
@@ -71,7 +71,7 @@ public class CharacterCreatorController {
     @GetMapping("/character-creator-step-2/{id}")
     public String CharacterCreatorStepTwo(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                           @PathVariable long id) {
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         creatorStepTwoModelAttributes(model, id);
         return "character_creator/creator_2";
     }
@@ -81,7 +81,7 @@ public class CharacterCreatorController {
                                                 @Valid CharacterStatistics statistics, BindingResult result,
                                                 @RequestParam long id) {
         if (result.hasErrors()) {
-            currentUserName(model, currentUser);
+            CurrentUserInfo.passModelAttributes(model, currentUser);
             creatorStepTwoModelAttributes(model, id);
             return "character_creator/creator_2";
         }
@@ -98,7 +98,7 @@ public class CharacterCreatorController {
     @GetMapping("/character-creator-step-4/{id}")
     public String CharacterCreatorStepFour(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                            @PathVariable long id) {
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         creatorStepFourModelAttributes(model, id);
         return "character_creator/creator_4";
     }
@@ -106,7 +106,7 @@ public class CharacterCreatorController {
     @GetMapping("/score-increase-add/{increaseId}/{charId}")
     public String addScoreIncrease(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                    @PathVariable long increaseId, @PathVariable long charId) {
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         chooseScoreIncreaseModelAttributes(model, increaseId, charId);
         return "character_creator/creator_score_increase";
     }
@@ -115,7 +115,7 @@ public class CharacterCreatorController {
     public String addScoreIncreaseResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
                                          @RequestParam long charId, @Valid CharacterScoreIncrease increase) {
         characterService.editCharacterIncrease(increase);
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         creatorStepFourModelAttributes(model, charId);
         return "character_creator/creator_4";
     }
@@ -135,7 +135,7 @@ public class CharacterCreatorController {
         core.setUser(core.getUser());
         characterService.editCharacter(core);
 
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         creatorStepFourModelAttributes(model, id);
         return "character_creator/creator_4";
     }
@@ -143,11 +143,6 @@ public class CharacterCreatorController {
     //TODO Implement creator-step-5 when items.class is created
 
     /* !SUPPORT METHOD SECTION STARTS HERE! */
-
-    public void currentUserName(Model model, CurrentUser currentUser) {
-        String username = currentUser.getUser().getUsername();
-        model.addAttribute("user", username);
-    }
 
     public void creatorStepOneModelAttributes(Model model) {
         raceList = raceService.findAll();

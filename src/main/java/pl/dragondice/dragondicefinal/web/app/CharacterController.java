@@ -23,7 +23,7 @@ public class CharacterController {
     @GetMapping("/character-sheet/{id}")
     public String characterSheet(@AuthenticationPrincipal CurrentUser currentUser, Model model, @PathVariable long id){
 
-        currentUserName(model, currentUser);
+        CurrentUserInfo.passModelAttributes(model, currentUser);
         characterCore(model, id);
         abilityScoresModelAttributes(model, id);
         abilityScoreModifiersModelAttributes(model, id);
@@ -33,11 +33,6 @@ public class CharacterController {
     }
 
     /* SUPPORT METHOD SECTION STARTS */
-
-    public void currentUserName(Model model, CurrentUser currentUser){
-        String username = currentUser.getUser().getUsername();
-        model.addAttribute("user", username);
-    }
 
     public void characterCore(Model model, long id){
         CharacterCore character = characterService.findById(id).get();

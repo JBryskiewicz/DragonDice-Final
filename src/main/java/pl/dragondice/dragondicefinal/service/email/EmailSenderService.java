@@ -15,7 +15,8 @@ import javax.mail.internet.MimeMessage;
 @AllArgsConstructor
 public class EmailSenderService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailSenderService.class);
-    private static final String FROM_EMAIL = "[email_placeholder]";
+    private static final String FROM_EMAIL = "gamingpass0909xx@gmail.com";
+//    private static final String FROM_EMAIL = "[email_placeholder]";
     private static final String ENCODING = "utf-8";
     private static final String SUBJECT = "'Dragon Dice' account verification.";
     private static final String ERROR_MESSAGE = "Failed to send email";

@@ -11,7 +11,6 @@ import pl.dragondice.dragondicefinal.repository.Role.RoleRepository;
 import pl.dragondice.dragondicefinal.repository.user.UserRepository;
 import pl.dragondice.dragondicefinal.service.email.ConfirmationEmail;
 import pl.dragondice.dragondicefinal.service.email.EmailSenderService;
-import pl.dragondice.dragondicefinal.service.email.EmailValidator;
 import pl.dragondice.dragondicefinal.service.verification_token.VerificationTokenService;
 
 import javax.persistence.EntityManager;
@@ -28,7 +27,6 @@ public class UserServiceImpl implements UserService {
 
     private static final String USER_ROLE = "ROLE_USER";
     private static final String LINK = "http://localhost:8081/register-section/signup-confirm/";
-    private static final String CONFIRM_ERROR = "Email is not verified, check your email";
     private static final String TOKEN_ERROR = "Incorrect activation token";
     private static final String TOKEN_CONFIRMED = "Account activated via verification";
     private static final String TOKEN_EXPIRED = "This token is expired";
@@ -41,7 +39,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final VerificationTokenService tokenService;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final EmailValidator emailValidator;
     private final EmailSenderService emailSenderService;
     @PersistenceContext
     private EntityManager entityManager;
@@ -53,10 +50,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        boolean validEmail = emailValidator.test(user.getEmail());
-        if(!validEmail){
-            throw new IllegalStateException(CONFIRM_ERROR);
-        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(DISABLED);
         Role userRole = roleRepository.findByName(USER_ROLE);
@@ -104,11 +97,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findByEmail(String email) {
-        String existingEmail = userRepository.findByEmail(email).getEmail();
-        if(existingEmail.equals(null)){
+        try{
+            return userRepository.findByEmail(email).getEmail();
+        }catch (NullPointerException e){
             return "DOES_NOT_EXIST";
         }
-        return existingEmail;
     }
 
 

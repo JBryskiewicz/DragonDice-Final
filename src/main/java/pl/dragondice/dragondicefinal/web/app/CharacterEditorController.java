@@ -46,19 +46,21 @@ public class CharacterEditorController {
 
     @PostMapping("/character-editor-step-1-result")
     public String characterEditorStepOneResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
-                                               @Valid CharacterCore core, BindingResult result, @RequestParam long id){
+                                               @Valid @ModelAttribute("character") CharacterCore character,
+                                               BindingResult result,
+                                               @RequestParam long id){
         if(result.hasErrors()){
             CurrentUserInfo.passModelAttributes(model, currentUser);
             editorStepOneModelAttributes(model, id);
             return "character_editor/editor_1";
         }
         CharacterCore originalCore = characterService.findById(id).get();
-        core.setStats(originalCore.getStats());
-        core.setIncreases(originalCore.getIncreases());
-        core.setFeats(originalCore.getFeats());
-        core.setUser(originalCore.getUser());
-        characterService.editCharacter(core);
-        return "redirect:/app/character-editor-step-2/" + core.getId();
+        character.setStats(originalCore.getStats());
+        character.setIncreases(originalCore.getIncreases());
+        character.setFeats(originalCore.getFeats());
+        character.setUser(originalCore.getUser());
+        characterService.editCharacter(character);
+        return "redirect:/app/character-editor-step-2/" + character.getId();
     }
 
     @GetMapping("/character-editor-step-2/{id}")
@@ -109,16 +111,15 @@ public class CharacterEditorController {
         List<CharacterRace> raceSelection = raceList.stream()
                 .skip(DEFAULT_SELECTION)
                 .collect(Collectors.toList());
+        model.addAttribute("race", raceSelection);
 
         backgroundList = backgroundService.findAll();
         List<CharacterBackground> backgroundSelection = backgroundList.stream()
                 .skip(DEFAULT_SELECTION)
                 .collect(Collectors.toList());
+        model.addAttribute("background", backgroundSelection);
 
         CharacterCore character = characterService.findById(id).get();
-
-        model.addAttribute("race", raceSelection);
-        model.addAttribute("background", backgroundSelection);
         model.addAttribute("character", character);
     }
 

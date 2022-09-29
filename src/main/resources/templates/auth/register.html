@@ -55,19 +55,18 @@
                     <form th:action="@{/register-section/register-result}" th:object="${user}" method="post">
                         <div class="form-floating mb-3">
                             <input th:field="*{username}" class="form-control" id="floatingText" placeholder="username"/>
-                            <!--<form:errors path="username" cssClass="error" cssStyle="color: #bc1212"/>-->
                             <label for="floatingText">Username</label>
-                            <!--<span id="userName.errors" class="errorName"></span>-->
+                            <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                         </div>
                         <div class="form-floating mb-3">
                             <input th:field="*{email}" type="email" class="form-control" id="floatingInput" placeholder="name@example.com"/>
-<!--                            <errors path="email" cssClass="error" cssStyle="color: #bc1212"/>-->
                             <label for="floatingInput">Email address</label>
+                            <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                         </div>
                         <div class="form-floating mb-4">
                             <input th:field="*{password}" type="password" class="form-control" id="floatingPassword" placeholder="password"/>
-<!--                            <errors path="password" cssClass="error" cssStyle="color: #bc1212"/>-->
                             <label for="floatingPassword">Password</label>
+                            <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <a href="#">Forgot Password</a>

@@ -54,18 +54,19 @@ public class CharacterCreatorController {
 
     @PostMapping("/character-creator-step-1-result")
     public String CharacterCreatorStepOneResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
-                                                @Valid CharacterCore core, BindingResult result) {
+                                                @Valid @ModelAttribute("character") CharacterCore character,
+                                                BindingResult result) {
         if (result.hasErrors()) {
             CurrentUserInfo.passModelAttributes(model, currentUser);
             creatorStepOneModelAttributes(model);
             return "character_creator/creator_1";
         }
-        core.setStats(defaultStats());
-        core.setIncreases(defaultScoreIncreases());
-        core.setFeats(defaultFeats());
-        core.setUser(currentUser.getUser());
-        characterService.save(core);
-        return "redirect:/app/character-creator-step-2/" + core.getId();
+        character.setStats(defaultStats());
+        character.setIncreases(defaultScoreIncreases());
+        character.setFeats(defaultFeats());
+        character.setUser(currentUser.getUser());
+        characterService.save(character);
+        return "redirect:/app/character-creator-step-2/" + character.getId();
     }
 
     @GetMapping("/character-creator-step-2/{id}")
@@ -123,6 +124,7 @@ public class CharacterCreatorController {
     @PostMapping("/feat-selection-result")
     public String featSelectionResult(@ModelAttribute("featList") FeatWrapper featList, @RequestParam long id,
                                       @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        //TODO this method requires changes, feats must be sorted by selection order!!!
         List<CharacterFeats> finalFeatList = featList.getFeats();
         int numberOfMissingFeats = MAX_FEATS_NUMBER - finalFeatList.size();
         for(int i=1; i<=numberOfMissingFeats; i++){
@@ -146,21 +148,25 @@ public class CharacterCreatorController {
 
     public void creatorStepOneModelAttributes(Model model) {
         raceList = raceService.findAll();
+
         List<CharacterRace> raceSelection = raceList.stream()
                 .skip(DEFAULT_SELECTION)
                 .collect(Collectors.toList());
+        model.addAttribute("race", raceSelection);
+
         CharacterRace defaultRace = raceList.stream().findFirst().get();
+        model.addAttribute("defaultRace", defaultRace);
 
         backgroundList = backgroundService.findAll();
+
         List<CharacterBackground> backgroundSelection = backgroundList.stream()
                 .skip(DEFAULT_SELECTION)
                 .collect(Collectors.toList());
-        CharacterBackground defaultBackground = backgroundList.stream().findFirst().get();
-
-        model.addAttribute("defaultRace", defaultRace);
-        model.addAttribute("race", raceSelection);
-        model.addAttribute("defaultBackground", defaultBackground);
         model.addAttribute("background", backgroundSelection);
+
+        CharacterBackground defaultBackground = backgroundList.stream().findFirst().get();
+        model.addAttribute("defaultBackground", defaultBackground);
+
         model.addAttribute("character", new CharacterCore());
     }
 

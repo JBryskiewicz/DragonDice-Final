@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,6 +45,11 @@ public class UserServiceImpl implements UserService {
     private EntityManager entityManager;
 
     @Override
+    public Optional<User> findById(long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -55,7 +61,7 @@ public class UserServiceImpl implements UserService {
         Role userRole = roleRepository.findByName(USER_ROLE);
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
         userRepository.save(user);
-        tokenService.save(user, TOKEN);
+        tokenService.saveVerificationToken(user, TOKEN);
 
         String link = LINK + TOKEN;
         ConfirmationEmail emailBody = new ConfirmationEmail();
@@ -68,7 +74,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String confirmToken(String token) {
         try{
-            VerificationToken verificationToken = tokenService.findByToken(token);
+            VerificationToken verificationToken = tokenService.findByVerificationToken(token);
             LocalDateTime now = LocalDateTime.now();
             if(now.isAfter(verificationToken.getExpiryDate())){
                 return TOKEN_EXPIRED;
@@ -76,7 +82,7 @@ public class UserServiceImpl implements UserService {
             if(!token.equals(verificationToken.getToken())){
                 return TOKEN_ERROR;
             }
-            User user = tokenService.findByToken(token).getUser();
+            User user = tokenService.findByVerificationToken(token).getUser();
             user.setEnabled(ENABLED);
             entityManager.merge(user);
             return TOKEN_CONFIRMED;
@@ -102,6 +108,11 @@ public class UserServiceImpl implements UserService {
         }catch (NullPointerException e){
             return "DOES_NOT_EXIST";
         }
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 

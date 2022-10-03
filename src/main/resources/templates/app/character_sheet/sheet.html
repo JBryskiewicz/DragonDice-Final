@@ -19,12 +19,10 @@
         <div class="container-fluid pt-4 px-4">
             <div class="dice" id="status"></div>
             <div class="bg-secondary text-center rounded p-4">
-<!--                <a style="color: #d41414; font-size: 20px;">Name:&nbsp;</a>-->
                 <a style="color: #d41414; font-size: 20px;" th:text="'Name: ' + ${character.name}"></a>
                 <a>  |  </a>
                 <a style="color: #0d6efd; font-size: 20px;">Class: Rogue / Scout</a>
                 <a>  |  </a>
-<!--                <a style="color: #d41414; font-size: 20px;">Level:&nbsp;</a>-->
                 <a style="color: #d41414; font-size: 20px;" th:text="'Level: ' + ${character.getStats().level}"></a>
             </div>
         </div>
@@ -55,33 +53,33 @@
                                     <td th:text="${chaAbilityScore}"></td>
 
                                     <td><button th:text="${dexMod}"
-                                                th:onclick="diceRoller(${dexMod})"
+                                                th:onclick="diceRoller([[${dexMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><button th:text="${strMod}"
-                                                th:onclick="diceRoller(${strMod})"
+                                                th:onclick="diceRoller([[${strMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                     <td><button th:text="${dexMod}"
-                                                th:onclick="diceRoller(${dexMod})"
+                                                th:onclick="diceRoller([[${dexMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                     <td><button th:text="${conMod}"
-                                                th:onclick="diceRoller(${conMod})"
+                                                th:onclick="diceRoller([[${conMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                     <td><button th:text="${intMod}"
-                                                th:onclick="diceRoller(${intMod})"
+                                                th:onclick="diceRoller([[${intMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                     <td><button th:text="${wisMod}"
-                                                th:onclick="diceRoller(${wisMod})"
+                                                th:onclick="diceRoller([[${wisMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                     <td><button th:text="${chaMod}"
-                                                th:onclick="diceRoller(${chaMod})"
+                                                th:onclick="diceRoller([[${chaMod}]])"
                                                 type="button" class="btn btn-danger m-2"/>
                                     </td>
                                 </tr>
@@ -135,12 +133,12 @@
                                 </thead>
                                 <tbody>
                                 <!-- In later versions proficiency will be added for certain saving throws --->
-                                <tr><td>Strength</td><td><button th:onclick="diceRoller(${strMod})" th:text="${strMod}" type="button" class="btn btn-danger m-2"/></td></tr>
-                                <tr><td>Dexterity</td><td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></button></td></tr>
-                                <tr><td>Constitution</td><td><button th:onclick="diceRoller(${conMod})" th:text="${conMod}" type="button" class="btn btn-danger m-2"/></td></tr>
-                                <tr><td>Intelligence</td><td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td></tr>
-                                <tr><td>Wisdom</td><td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td></tr>
-                                <tr><td>Charisma</td><td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Strength</td><td><button th:onclick="diceRoller([[${strMod}]])" th:text="${strMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Dexterity</td><td><button th:onclick="diceRoller([[${dexMod}]])" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></button></td></tr>
+                                <tr><td>Constitution</td><td><button th:onclick="diceRoller([[${conMod}]])" th:text="${conMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Intelligence</td><td><button th:onclick="diceRoller([[${intMod}]])" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Wisdom</td><td><button th:onclick="diceRoller([[${wisMod}]])" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td></tr>
+                                <tr><td>Charisma</td><td><button th:onclick="diceRoller([[${chaMod}]])" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td></tr>
                                 </tbody>
                             </table>
 
@@ -186,75 +184,75 @@
                                 <tbody>
                                 <tr>
                                     <td>Acrobatics</td>
-                                    <td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${dexMod}]])" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Animal Handling</td>
-                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${wisMod}]])" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Arcana</td>
-                                    <td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${intMod}]])" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Athletics</td>
-                                    <td><button th:onclick="diceRoller(${strMod})" th:text="${strMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${strMod}]])" th:text="${strMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Deception</td>
-                                    <td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${chaMod}]])" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>History</td>
-                                    <td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${intMod}]])" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Insight</td>
-                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${wisMod}]])" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Intimidation</td><td>
-                                    <button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <button th:onclick="diceRoller([[${chaMod}]])" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Investigation</td><td>
-                                    <button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <button th:onclick="diceRoller([[${intMod}]])" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Medicine</td><td>
-                                    <button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <button th:onclick="diceRoller([[${wisMod}]])" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Nature</td><td>
-                                    <button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <button th:onclick="diceRoller([[${intMod}]])" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Perception</td>
-                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${wisMod}]])" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Performance</td>
-                                    <td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${chaMod}]])" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Persuasion</td>
-                                    <td><button th:onclick="diceRoller(${chaMod})" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${chaMod}]])" th:text="${chaMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Religion</td>
-                                    <td><button th:onclick="diceRoller(${intMod})" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${intMod}]])" th:text="${intMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Sleight of Hand</td>
-                                    <td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${dexMod}]])" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Stealth</td>
-                                    <td><button th:onclick="diceRoller(${dexMod})" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${dexMod}]])" th:text="${dexMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 <tr>
                                     <td>Survival</td>
-                                    <td><button th:onclick="diceRoller(${wisMod})" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
+                                    <td><button th:onclick="diceRoller([[${wisMod}]])" th:text="${wisMod}" type="button" class="btn btn-danger m-2"/></td>
                                 </tr>
                                 </tbody>
                             </table>

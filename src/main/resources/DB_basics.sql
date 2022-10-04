@@ -21,7 +21,12 @@ insert into feats (id, description, name, score_increase_id)
 VALUES (1, 'Default selection', '-', 1),
        (2, '-', 'Feat 1', 1),
        (3, '-', 'Feat 2', 1),
-       (4, '-', 'Feat 3', 1);
+       (4, '-', 'Feat 3', 1),
+       (5, '-', 'Feat 4', 1),
+       (6, '-', 'Feat 5', 1),
+       (7, '-', 'Feat 6', 1),
+       (8, '-', 'Feat 7', 1),
+       (9, '-', 'Feat 8', 1),;
 
 insert into backgrounds (id, description, name)
 VALUES (1, 'Default selection', '-'),

@@ -12,6 +12,7 @@ import pl.dragondice.dragondicefinal.mechanics.ModifiersDefiner;
 import pl.dragondice.dragondicefinal.service.background.BackgroundService;
 import pl.dragondice.dragondicefinal.service.character_core.CharacterCoreService;
 import pl.dragondice.dragondicefinal.service.character_stats.CharacterStatsService;
+import pl.dragondice.dragondicefinal.service.feats.FeatService;
 import pl.dragondice.dragondicefinal.service.race.RaceService;
 import pl.dragondice.dragondicefinal.service.score_increase.ScoreIncreaseService;
 
@@ -31,10 +32,12 @@ public class CharacterEditorController {
     private final BackgroundService backgroundService;
     private final CharacterStatsService statsService;
     private final ScoreIncreaseService increaseService;
+    private final FeatService featService;
 
     private List<CharacterBackground> backgroundList;
     private List<CharacterRace> raceList;
     private List<CharacterScoreIncrease> scoreIncreaseList;
+    private List<CharacterFeats> featsList;
 
     @GetMapping("/character-editor-step-1/{id}")
     public String characterEditorStepOne(@AuthenticationPrincipal CurrentUser currentUser, Model model,
@@ -96,12 +99,21 @@ public class CharacterEditorController {
         return "character_editor/editor_score_increase";
     }
     @PostMapping("/score-increase-edit-result")
-    public String addScoreIncreaseResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
-                                         @RequestParam long charId,@Valid CharacterScoreIncrease increase){
+    public String addScoreIncreaseResult(@RequestParam long charId,@Valid CharacterScoreIncrease increase){
         characterService.editCharacterIncrease(increase);
-        CurrentUserInfo.passModelAttributes(model, currentUser);
-        editorStepFourModelAttributes(model, charId);
-        return "character_creator/creator_4";
+        return "redirect:/app/character-editor-step-4/"+charId;
+    }
+
+    @PostMapping("/feat-selection-editor-result")
+    public String featSelectionResult(@ModelAttribute("featList") FeatWrapper featList, @RequestParam long id) {
+        CharacterCore core = characterService.findById(id).get();
+        core.setFeats(featList.getFeats());
+        core.setStats(core.getStats());
+        core.setIncreases(core.getIncreases());
+        core.setUser(core.getUser());
+        characterService.editCharacter(core);
+
+        return "redirect:/app/character-editor-step-4/"+id;
     }
 
     /* SUPPORT METHOD SECTION STARTS */
@@ -131,9 +143,18 @@ public class CharacterEditorController {
     public void editorStepFourModelAttributes(Model model, long id){
         CharacterCore core = characterService.findById(id).get();
         int levelCheck = ModifiersDefiner.checkLevel(core.getStats().getLevel());
+
         scoreIncreaseList = characterService.findIncreasesByCoreIdAccordingToLevel(id, levelCheck);
         model.addAttribute("increases", scoreIncreaseList);
-        model.addAttribute("feats", core.getFeats());
+
+        FeatWrapper wrapper = new FeatWrapper();
+        featsList = characterService.findFeatsByCoreIdAccordingToLevel(id, levelCheck);
+        wrapper.setFeats(featsList);
+        model.addAttribute("featList", wrapper);
+
+        List<CharacterFeats> selectionFeatList = featService.findAll();
+        model.addAttribute("featSelection", selectionFeatList);
+
         model.addAttribute("charId", id);
     }
 

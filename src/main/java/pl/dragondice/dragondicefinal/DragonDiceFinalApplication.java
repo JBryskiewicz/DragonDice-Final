@@ -18,10 +18,8 @@ public class DragonDiceFinalApplication {
 
     //TODO
     // form validation - Check why step 1 for creators does not want to display errors unlike registration
-    // change forgotten password via email
-    // fix feat list for saving and editing (incorrect display order)
-    // fix registration form. Double click for register button causes error with stacktrace (sends two same entities to DB)
     // change login form into thymeleaf so validation can be applied
+    // fix registration form. Double click for register button causes error with stacktrace (sends two same entities to DB)
     // Create characterClass.class
     // Create characterSubClass.class
     // Create item.class

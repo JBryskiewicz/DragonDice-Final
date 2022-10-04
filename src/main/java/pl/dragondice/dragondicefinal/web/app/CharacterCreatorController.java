@@ -31,7 +31,6 @@ public class CharacterCreatorController {
     private static final int DEFAULT_PROFICIENCY = 2;
     private static final int DEFAULT_ABILITY_SCORE = 8;
     private static final int DEFAULT_SCORE_INCREASE = 0;
-    private static final int MAX_FEATS_NUMBER = 8;
 
     private final CharacterCoreService characterService;
     private final CharacterStatsService statsService;
@@ -113,33 +112,21 @@ public class CharacterCreatorController {
     }
 
     @PostMapping("/score-increase-add-result")
-    public String addScoreIncreaseResult(@AuthenticationPrincipal CurrentUser currentUser, Model model,
-                                         @RequestParam long charId, @Valid CharacterScoreIncrease increase) {
+    public String addScoreIncreaseResult(@RequestParam long charId, @Valid CharacterScoreIncrease increase) {
         characterService.editCharacterIncrease(increase);
-        CurrentUserInfo.passModelAttributes(model, currentUser);
-        creatorStepFourModelAttributes(model, charId);
-        return "character_creator/creator_4";
+        return "redirect:/app/character-editor-step-4/"+charId;
     }
 
-    @PostMapping("/feat-selection-result")
-    public String featSelectionResult(@ModelAttribute("featList") FeatWrapper featList, @RequestParam long id,
-                                      @AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        //TODO this method requires changes, feats must be sorted by selection order!!!
-        List<CharacterFeats> finalFeatList = featList.getFeats();
-        int numberOfMissingFeats = MAX_FEATS_NUMBER - finalFeatList.size();
-        for(int i=1; i<=numberOfMissingFeats; i++){
-            finalFeatList.add(featService.findById(DEFAULT_SELECTION).get());
-        }
+    @PostMapping("/feat-selection-creator-result")
+    public String featSelectionResult(@ModelAttribute("featList") FeatWrapper featList, @RequestParam long id) {
         CharacterCore core = characterService.findById(id).get();
-        core.setFeats(finalFeatList);
+        core.setFeats(featList.getFeats());
         core.setStats(core.getStats());
         core.setIncreases(core.getIncreases());
         core.setUser(core.getUser());
         characterService.editCharacter(core);
 
-        CurrentUserInfo.passModelAttributes(model, currentUser);
-        creatorStepFourModelAttributes(model, id);
-        return "character_creator/creator_4";
+        return "redirect:/app/character-creator-step-4/"+id;
     }
 
     //TODO Implement creator-step-5 when items.class is created

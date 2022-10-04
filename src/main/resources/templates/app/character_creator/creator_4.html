@@ -77,7 +77,7 @@
                                         </tbody>
                                     </table>
                                     <a th:href="@{'/app/score-increase-add/' + ${i.getId()} + '/' + ${charId}}"
-                                       class="btn btn-primary rounded-pill m-2">
+                                        class="btn btn-primary rounded-pill m-2">
                                         Add Score Increase
                                     </a>
                                 </div>
@@ -90,7 +90,7 @@
                 <!-- FEAT SELECTION FORM - START -->
                 <div class="col-sm-12 col-xl-6">
                     <div class="bg-secondary rounded h-100 p-4">
-                        <form th:object="${featList}" th:action="@{/app/feat-selection-result}" th:method="post">
+                        <form th:object="${featList}" th:action="@{/app/feat-selection-creator-result}" th:method="post">
 
                             <th:block th:each="feat, itemStat : ${featList.feats}">
                                 <h5>Feat</h5>
